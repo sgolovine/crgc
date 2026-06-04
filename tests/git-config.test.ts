@@ -2,7 +2,19 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { getConfigValue, writeConfigEntries } from "../src/utils/git-config.js";
+import {
+  getAvailableManagedGitConfigPath,
+  getConfigValue,
+  getGitdirCondition,
+  getHomeGitConfigPath,
+  getProjectPostfix,
+  listManagedGitConfigs,
+  removeManagedGitConfig,
+  resolveProjectDirectory,
+  updateManagedGitConfigLocation,
+  writeConfigEntries,
+  writeManagedInclude
+} from "../src/utils/git-config.js";
 
 let tempDir: string;
 let configPath: string;
@@ -62,6 +74,27 @@ describe("writeConfigEntries", () => {
     await expect(getConfigValue(configPath, "user.name")).resolves.toBe("Ada Lovelace");
   });
 
+  it("merges global settings into a root gitconfig with existing includes", async () => {
+    await writeManagedInclude(configPath, "~/Projects/company_a/", ".gitconfig.company_a");
+
+    await writeConfigEntries(
+      configPath,
+      [
+        {
+          key: "fetch.prune",
+          value: "true",
+          description: "Remove stale remote-tracking branches."
+        }
+      ],
+      async () => true
+    );
+
+    await expect(getConfigValue(configPath, "includeIf.gitdir:~/Projects/company_a/.path")).resolves.toBe(
+      ".gitconfig.company_a"
+    );
+    await expect(getConfigValue(configPath, "fetch.prune")).resolves.toBe("true");
+  });
+
   it("skips existing settings when replacement is declined", async () => {
     await writeFile(
       configPath,
@@ -110,5 +143,78 @@ describe("writeConfigEntries", () => {
     expect(result.written).toHaveLength(1);
     expect(result.skipped).toHaveLength(0);
     await expect(getConfigValue(configPath, "user.name")).resolves.toBe("Ada Lovelace");
+  });
+});
+
+describe("managed gitconfigs", () => {
+  it("derives the postfix from the final project directory name", () => {
+    expect(getProjectPostfix("/foo/bar/baz/bat")).toBe("bat");
+    expect(getProjectPostfix("/foo/bar/baz/bat/")).toBe("bat");
+  });
+
+  it("expands home-relative project directories", () => {
+    expect(resolveProjectDirectory("~/Projects/example", "/home/ada")).toBe("/home/ada/Projects/example");
+  });
+
+  it("formats gitdir conditions with a home prefix and trailing slash", () => {
+    expect(getGitdirCondition(join(tempDir, "Projects", "company_a"), tempDir)).toBe("~/Projects/company_a/");
+  });
+
+  it("increments the config filename when the desired file is taken", async () => {
+    await writeFile(join(tempDir, ".gitconfig.company_a"), "");
+    await writeFile(join(tempDir, ".gitconfig.company_a_1"), "");
+
+    await expect(getAvailableManagedGitConfigPath("company_a", tempDir)).resolves.toBe(
+      join(tempDir, ".gitconfig.company_a_2")
+    );
+  });
+
+  it("tracks includeIf entries in the home gitconfig", async () => {
+    const homeConfigPath = getHomeGitConfigPath(tempDir);
+
+    await writeManagedInclude(homeConfigPath, "~/Projects/company_a/", ".gitconfig.company_a");
+
+    await expect(getConfigValue(homeConfigPath, "includeIf.gitdir:~/Projects/company_a/.path")).resolves.toBe(
+      ".gitconfig.company_a"
+    );
+    await expect(listManagedGitConfigs(homeConfigPath)).resolves.toEqual([
+      {
+        gitdir: "~/Projects/company_a/",
+        includePath: ".gitconfig.company_a",
+        configPath: join(tempDir, ".gitconfig.company_a"),
+        label: "company_a"
+      }
+    ]);
+  });
+
+  it("removes tracked includeIf entries and deletes the managed gitconfig", async () => {
+    const homeConfigPath = getHomeGitConfigPath(tempDir);
+    const managedConfigPath = join(tempDir, ".gitconfig.company_a");
+
+    await writeFile(managedConfigPath, "[user]\n\tname = Ada\n");
+    await writeManagedInclude(homeConfigPath, "~/Projects/company_a/", ".gitconfig.company_a");
+    const [config] = await listManagedGitConfigs(homeConfigPath);
+
+    await removeManagedGitConfig(homeConfigPath, config);
+
+    await expect(listManagedGitConfigs(homeConfigPath)).resolves.toEqual([]);
+    await expect(readFile(managedConfigPath, "utf8")).rejects.toMatchObject({ code: "ENOENT" });
+  });
+
+  it("updates a tracked project directory without deleting the managed gitconfig", async () => {
+    const homeConfigPath = getHomeGitConfigPath(tempDir);
+    const managedConfigPath = join(tempDir, ".gitconfig.company_a");
+
+    await writeFile(managedConfigPath, "[user]\n\tname = Ada\n");
+    await writeManagedInclude(homeConfigPath, "~/Projects/company_a/", ".gitconfig.company_a");
+    const [config] = await listManagedGitConfigs(homeConfigPath);
+
+    await updateManagedGitConfigLocation(homeConfigPath, config, "~/Projects/company_b/");
+
+    await expect(getConfigValue(homeConfigPath, "includeIf.gitdir:~/Projects/company_a/.path")).resolves.toBeUndefined();
+    await expect(getConfigValue(homeConfigPath, "includeIf.gitdir:~/Projects/company_b/.path")).resolves.toBe(
+      ".gitconfig.company_a"
+    );
+    await expect(readFile(managedConfigPath, "utf8")).resolves.toContain("name = Ada");
   });
 });

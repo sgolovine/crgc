@@ -6,7 +6,30 @@ Interactive project `.gitconfig` generator.
 npx create-gitconfig
 ```
 
-The CLI opens a selectable menu of Git settings, explains each setting before writing it, and writes to `.gitconfig` in the directory where the command is run. Existing settings are detected with `git config --file`; when a key already exists, the CLI asks before replacing it.
+The CLI opens with the project gitconfigs tracked from your home `~/.gitconfig`. You can create a new project gitconfig, update global settings, or select an existing project gitconfig to edit, move, or delete.
+
+Created gitconfigs are stored in your home directory with a postfix based on the final project directory name:
+
+```text
+/foo/bar/baz/bat -> ~/.gitconfig.bat
+```
+
+If that filename is already taken, the CLI appends a number, such as `.gitconfig.bat_1` or `.gitconfig.bat_2`.
+
+The top-level `~/.gitconfig` tracks each project gitconfig with `includeIf`:
+
+```gitconfig
+[includeIf "gitdir:~/Projects/company_a/"]
+  path = .gitconfig.company_a
+[includeIf "gitdir:~/Projects/subdir/company_b/"]
+  path = .gitconfig.company_b
+```
+
+If a tracked project directory moves or gets renamed, select its project gitconfig and choose **Update location**. The CLI rewrites the `includeIf` directory condition in `~/.gitconfig` while keeping the same managed gitconfig file and settings.
+
+Global settings use the same selectable menu of Git settings as project gitconfigs. Choose **Update global settings** to write shared settings directly to the root `~/.gitconfig`; new settings are merged with existing global settings and managed `includeIf` entries.
+
+When editing any gitconfig, the CLI explains each setting before writing it. Existing settings are detected with `git config --file`; when a key already exists, the CLI asks before replacing it.
 
 ## Options
 
