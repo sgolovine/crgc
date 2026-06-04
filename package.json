@@ -4,7 +4,7 @@
   "description": "Interactive project .gitconfig generator for common Git settings.",
   "type": "module",
   "bin": {
-    "create-gitconfig": "./dist/cli.js"
+    "crgc": "./dist/cli.js"
   },
   "files": [
     "dist",
