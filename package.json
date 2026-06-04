@@ -1,5 +1,5 @@
 {
-  "name": "crgc",
+  "name": "@sunnygg/crgc",
   "version": "0.1.2",
   "description": "Interactive project .gitconfig generator for common Git settings.",
   "type": "module",
@@ -25,7 +25,7 @@
     "create",
     "cli"
   ],
-  "author": "",
+  "author": "Sunny Golovine",
   "license": "MIT",
   "engines": {
     "node": ">=24.0.0"
