@@ -1,7 +1,10 @@
 #!/usr/bin/env node
+import { basename, dirname } from "node:path";
 import { confirm, intro, log, note, outro, path as pathPrompt, select } from "@clack/prompts";
 import { gitConfigOptions } from "./options/index.js";
+import type { GitConfigEntry } from "./types.js";
 import { cancelIfNeeded } from "./utils/cancel.js";
+import type { ManagedGitConfig } from "./utils/git-config.js";
 import {
   getAvailableManagedGitConfigPath,
   getGitdirCondition,
@@ -14,9 +17,6 @@ import {
   writeConfigEntries,
   writeManagedInclude
 } from "./utils/git-config.js";
-import type { GitConfigEntry } from "./types.js";
-import type { ManagedGitConfig } from "./utils/git-config.js";
-import { basename, dirname } from "node:path";
 
 type MainMenuAction = string | "create" | "global" | "finish";
 type ManageAction = "edit" | "move" | "delete" | "back";
@@ -83,10 +83,7 @@ async function main(): Promise<void> {
   }
 }
 
-async function createGitConfig(
-  homeConfigPath: string,
-  existingConfigs?: ManagedGitConfig[]
-): Promise<void> {
+async function createGitConfig(homeConfigPath: string, existingConfigs?: ManagedGitConfig[]): Promise<void> {
   const trackedConfigs = existingConfigs ?? (await listManagedGitConfigs(homeConfigPath));
   const projectDir = resolveProjectDirectory(
     cancelIfNeeded(
@@ -259,9 +256,7 @@ async function configureGitConfig(configPath: string, scope: "global" | "project
 }
 
 function explainEntries(entries: GitConfigEntry[]): void {
-  const body = entries
-    .map((entry) => `${entry.key} = ${entry.value}\n${entry.description}`)
-    .join("\n\n");
+  const body = entries.map((entry) => `${entry.key} = ${entry.value}\n${entry.description}`).join("\n\n");
 
   note(body, "Settings");
 }

@@ -1,8 +1,8 @@
-import { homedir } from "node:os";
 import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
-import { spawnFile } from "./process.js";
 import type { GitConfigEntry } from "../types.js";
+import { spawnFile } from "./process.js";
 
 export type ExistingConfigEntry = {
   key: string;
@@ -63,8 +63,7 @@ export function resolveProjectDirectory(projectDir: string, homeDir = homedir())
 export function getGitdirCondition(projectDir: string, homeDir = homedir()): string {
   const absoluteProjectDir = resolveProjectDirectory(projectDir, homeDir);
   const relativeToHome = relative(homeDir, absoluteProjectDir);
-  const useHomePrefix =
-    relativeToHome.length > 0 && !relativeToHome.startsWith("..") && !isAbsolute(relativeToHome);
+  const useHomePrefix = relativeToHome.length > 0 && !relativeToHome.startsWith("..") && !isAbsolute(relativeToHome);
   const gitdir = useHomePrefix ? `~/${toGitPath(relativeToHome)}` : toGitPath(absoluteProjectDir);
 
   return ensureTrailingSlash(gitdir);
@@ -103,9 +102,13 @@ export async function ensureGitConfigFile(configPath: string): Promise<void> {
 }
 
 export async function listManagedGitConfigs(homeConfigPath = getHomeGitConfigPath()): Promise<ManagedGitConfig[]> {
-  const result = await spawnFile("git", ["config", "--file", homeConfigPath, "--get-regexp", "^includeIf\\..*\\.path$"], {
-    rejectOnError: false
-  });
+  const result = await spawnFile(
+    "git",
+    ["config", "--file", homeConfigPath, "--get-regexp", "^includeIf\\..*\\.path$"],
+    {
+      rejectOnError: false
+    }
+  );
 
   if (result.exitCode === 1) {
     return [];
@@ -122,11 +125,7 @@ export async function listManagedGitConfigs(homeConfigPath = getHomeGitConfigPat
     .filter((entry): entry is ManagedGitConfig => entry !== undefined);
 }
 
-export async function writeManagedInclude(
-  homeConfigPath: string,
-  gitdir: string,
-  includePath: string
-): Promise<void> {
+export async function writeManagedInclude(homeConfigPath: string, gitdir: string, includePath: string): Promise<void> {
   await ensureGitConfigFile(homeConfigPath);
   const contents = await readFile(homeConfigPath, "utf8");
 
@@ -169,9 +168,13 @@ async function removeManagedInclude(homeConfigPath: string, config: ManagedGitCo
     }
   }
 
-  const removeSection = await spawnFile("git", ["config", "--file", homeConfigPath, "--remove-section", `includeIf.gitdir:${config.gitdir}`], {
-    rejectOnError: false
-  });
+  const removeSection = await spawnFile(
+    "git",
+    ["config", "--file", homeConfigPath, "--remove-section", `includeIf.gitdir:${config.gitdir}`],
+    {
+      rejectOnError: false
+    }
+  );
 
   if (removeSection.exitCode !== 0 && removeSection.exitCode !== 1) {
     throw new Error(removeSection.stderr.trim() || `Unable to remove ${config.gitdir} from ${homeConfigPath}.`);
@@ -384,7 +387,10 @@ function getConfigLines(contents: string): string[] {
 }
 
 function tidyConfigLines(lines: string[]): string {
-  const contents = lines.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd();
+  const contents = lines
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trimEnd();
 
   return contents.length > 0 ? `${contents}\n` : "";
 }

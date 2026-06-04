@@ -1,3 +1,4 @@
+import type { GitConfigOption } from "../types.js";
 import { aliasesOption } from "./aliases.js";
 import { commitSigningOption } from "./commit-signing.js";
 import { coreLineEndingsOption } from "./core-line-endings.js";
@@ -8,7 +9,6 @@ import { pullStrategyOption } from "./pull-strategy.js";
 import { pushAutoSetupRemoteOption } from "./push-auto-setup-remote.js";
 import { rerereOption } from "./rerere.js";
 import { userIdentityOption } from "./user-identity.js";
-import type { GitConfigOption } from "../types.js";
 
 export const gitConfigOptions: GitConfigOption[] = [
   userIdentityOption,

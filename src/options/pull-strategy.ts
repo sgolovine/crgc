@@ -32,7 +32,11 @@ export const pullStrategyOption: GitConfigOption = {
         options: [
           { value: "rebase", label: "Rebase", hint: "Replay local commits on top of fetched commits." },
           { value: "merge", label: "Merge", hint: "Create a merge commit when histories diverge." },
-          { value: "rebase-merges", label: "Rebase with merges", hint: "Replay local commits while preserving merge commits." },
+          {
+            value: "rebase-merges",
+            label: "Rebase with merges",
+            hint: "Replay local commits while preserving merge commits."
+          },
           { value: "interactive", label: "Interactive rebase", hint: "Open an interactive rebase flow during pull." }
         ]
       })

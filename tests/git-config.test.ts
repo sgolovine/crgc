@@ -1,6 +1,6 @@
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   getAvailableManagedGitConfigPath,
@@ -261,7 +261,9 @@ describe("managed gitconfigs", () => {
 
     await updateManagedGitConfigLocation(homeConfigPath, config, "~/Projects/company_b/");
 
-    await expect(getConfigValue(homeConfigPath, "includeIf.gitdir:~/Projects/company_a/.path")).resolves.toBeUndefined();
+    await expect(
+      getConfigValue(homeConfigPath, "includeIf.gitdir:~/Projects/company_a/.path")
+    ).resolves.toBeUndefined();
     await expect(getConfigValue(homeConfigPath, "includeIf.gitdir:~/Projects/company_b/.path")).resolves.toBe(
       ".gitconfig.company_a"
     );

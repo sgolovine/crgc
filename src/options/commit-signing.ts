@@ -4,7 +4,11 @@ import { cancelIfNeeded } from "../utils/cancel.js";
 
 export type SigningFormat = "openpgp" | "ssh" | "x509";
 
-export function buildCommitSigningEntries(enabled: boolean, signingKey?: string, format?: SigningFormat): GitConfigEntry[] {
+export function buildCommitSigningEntries(
+  enabled: boolean,
+  signingKey?: string,
+  format?: SigningFormat
+): GitConfigEntry[] {
   const entries: GitConfigEntry[] = [
     {
       key: "commit.gpgSign",

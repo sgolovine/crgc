@@ -25,8 +25,12 @@ describe("git config option builders", () => {
   });
 
   it("builds pull.rebase strategies", () => {
-    expect(buildPullStrategyEntries("merge")).toEqual([expect.objectContaining({ key: "pull.rebase", value: "false" })]);
-    expect(buildPullStrategyEntries("rebase")).toEqual([expect.objectContaining({ key: "pull.rebase", value: "true" })]);
+    expect(buildPullStrategyEntries("merge")).toEqual([
+      expect.objectContaining({ key: "pull.rebase", value: "false" })
+    ]);
+    expect(buildPullStrategyEntries("rebase")).toEqual([
+      expect.objectContaining({ key: "pull.rebase", value: "true" })
+    ]);
     expect(buildPullStrategyEntries("rebase-merges")).toEqual([
       expect.objectContaining({ key: "pull.rebase", value: "merges" })
     ]);
