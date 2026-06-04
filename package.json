@@ -1,0 +1,39 @@
+{
+  "name": "create-gitconfig",
+  "version": "0.1.0",
+  "description": "Interactive project .gitconfig generator for common Git settings.",
+  "type": "module",
+  "bin": {
+    "create-gitconfig": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && chmod +x dist/cli.js",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "keywords": [
+    "git",
+    "gitconfig",
+    "create",
+    "cli"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@11.5.1",
+  "dependencies": {
+    "@clack/prompts": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  }
+}
