@@ -5,6 +5,20 @@ on:
     types:
       - published
   workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to publish, such as a tag name.
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      ref:
+        description: Git ref to publish, such as a tag name.
+        required: true
+        type: string
+    secrets:
+      NPM_TOKEN:
+        required: true
 
 permissions:
   contents: read
@@ -18,7 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.release.tag_name || github.ref }}
+          ref: ${{ inputs.ref || github.event.release.tag_name || github.ref }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6

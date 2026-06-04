@@ -10,6 +10,8 @@ jobs:
   create-release:
     name: Create GitHub release from main
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.package.outputs.tag }}
 
     steps:
       - name: Checkout main
@@ -66,3 +68,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.package.outputs.tag }}
+
+  publish:
+    name: Publish package
+    needs: create-release
+    uses: ./.github/workflows/publish.yml
+    with:
+      ref: ${{ needs.create-release.outputs.tag }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
