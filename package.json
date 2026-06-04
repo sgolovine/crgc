@@ -1,5 +1,5 @@
 {
-  "name": "create-gitconfig",
+  "name": "crgc",
   "version": "0.1.0",
   "description": "Interactive project .gitconfig generator for common Git settings.",
   "type": "module",
