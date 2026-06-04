@@ -1,6 +1,6 @@
 {
   "name": "crgc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Interactive project .gitconfig generator for common Git settings.",
   "type": "module",
   "bin": {
