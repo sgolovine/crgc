@@ -2,7 +2,7 @@
 
 A simple script to help you create project specific gitconfigs and update them easily. Built because I got tired of manually updating my gitconfig's when I wanted a new one for a project.
 
-[![asciicast](https://asciinema.org/a/1200543.svg)](https://asciinema.org/a/1200543)
+<script src="https://asciinema.org/a/1200543.js" id="asciicast-1200543" async="true"></script>
 
 You can run the script via:
 ```sh
