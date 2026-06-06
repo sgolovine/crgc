@@ -1,9 +1,10 @@
-# create-gitconfig
+# CRGC - Create Git Config
 
-Interactive project `.gitconfig` generator.
+A simple script to help you create project specific gitconfigs and update them easily. Built because I got tired of manually updating my gitconfig's when I wanted a new one for a project.
 
+You can run the script via:
 ```sh
-npx create-gitconfig
+npx @sunnygg/crgc
 ```
 
 The CLI opens with the project gitconfigs tracked from your home `~/.gitconfig`. You can create a new project gitconfig, update global settings, or select an existing project gitconfig to edit, move, or delete.
@@ -55,3 +56,8 @@ pnpm build
 ```
 
 Git config behavior follows the official Git documentation for `git config`: <https://git-scm.com/docs/git-config>.
+
+## Roadmap
+
+- Viewing the gitconfig while editing
+- Better UI overall
