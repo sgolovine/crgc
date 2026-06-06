@@ -1,6 +1,22 @@
-# CRGC - Create Git Config
+<div align="center">
+  <h1>CRGC - Create Git Config</h1>
+  <p>A simple script to help you create project specific gitconfigs and update them easily.</p>
 
-A simple script to help you create project specific gitconfigs and update them easily. Built because I got tired of manually updating my gitconfig's when I wanted a new one for a project.
+  <p>
+    <a href="https://www.npmjs.com/package/@sunnygg/crgc">
+      <img src="https://img.shields.io/npm/v/@sunnygg/crgc.svg" alt="npm version">
+    </a>
+    <a href="https://www.npmjs.com/package/@sunnygg/crgc">
+      <img src="https://img.shields.io/npm/dm/@sunnygg/crgc.svg" alt="npm downloads">
+    </a>
+    <a href="https://github.com/sunnygg/crgc/actions/workflows/ci.yml">
+      <img src="https://github.com/sunnygg/crgc/actions/workflows/ci.yml/badge.svg?branch=main" alt="Build Status">
+    </a>
+    <a href="https://www.npmjs.com/package/@sunnygg/crgc">
+      <img src="https://img.shields.io/npm/l/@sunnygg/crgc.svg" alt="License">
+    </a>
+  </p>
+</div>
 
 [![View demo recording](https://asciinema.org/a/1200543.svg)](https://asciinema.org/a/1200543)
 
