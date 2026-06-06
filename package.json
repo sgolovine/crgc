@@ -1,6 +1,6 @@
 {
   "name": "@sunnygg/crgc",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Interactive project .gitconfig generator for common Git settings.",
   "type": "module",
   "bin": {
