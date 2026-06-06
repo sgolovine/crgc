@@ -2,9 +2,6 @@
   <h1>CRGC - Create Git Config</h1>
   <p>A simple script to help you create project specific gitconfigs and update them easily.</p>
 
-<code>
-npx @sunnygg/crgc
-</code>
 
   <p>
     <a href="https://www.npmjs.com/package/@sunnygg/crgc">
@@ -22,6 +19,21 @@ npx @sunnygg/crgc
   </p>
 </div>
 
+## Demo
+
+<script src="https://asciinema.org/a/1200543.js" id="asciicast-1200543" async="true"></script>
+
+[![View demo recording](https://asciinema.org/a/1200543.svg)](https://asciinema.org/a/1200543)
+
+
+
+## Install
+
+```sh
+npx @sunnygg/crgc
+```
+
+## How It Works
 
 The CLI opens with the project gitconfigs tracked from your home `~/.gitconfig`. You can create a new project gitconfig, update global settings, or select an existing project gitconfig to edit, move, or delete.
 
