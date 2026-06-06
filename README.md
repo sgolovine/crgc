@@ -9,8 +9,8 @@
     <a href="https://www.npmjs.com/package/@sunnygg/crgc">
       <img src="https://img.shields.io/npm/dm/@sunnygg/crgc.svg" alt="npm downloads">
     </a>
-    <a href="https://github.com/sunnygg/crgc/actions/workflows/ci.yml">
-      <img src="https://github.com/sunnygg/crgc/actions/workflows/ci.yml/badge.svg?branch=main" alt="Build Status">
+    <a href="https://github.com/sgolovine/crgc/actions/workflows/ci.yml">
+      <img src="https://github.com/sgolovine/crgc/actions/workflows/ci.yml/badge.svg?branch=main" alt="Build Status">
     </a>
     <a href="https://www.npmjs.com/package/@sunnygg/crgc">
       <img src="https://img.shields.io/npm/l/@sunnygg/crgc.svg" alt="License">
