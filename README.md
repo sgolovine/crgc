@@ -21,8 +21,6 @@
 
 ## Demo
 
-<script src="https://asciinema.org/a/1200543.js" id="asciicast-1200543" async="true"></script>
-
 [![View demo recording](https://asciinema.org/a/1200543.svg)](https://asciinema.org/a/1200543)
 
 
